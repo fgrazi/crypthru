@@ -1,0 +1,12 @@
+app:
+  version: @project.version@
+  encoding: @project.build.sourceEncoding@
+  javaVersion: @java.version@
+
+  directives:
+    create-key-pair: net.cbsolution.crypthru.directives.CreateKeypair
+    encrypt: net.cbsolution.crypthru.directives.Encrypt
+    decrypt: net.cbsolution.crypthru.directives.Decrypt
+    execute: net.cbsolution.crypthru.directives.Execute
+    import-public-key: net.cbsolution.crypthru.directives.ImportPublicKey
+

@@ -1,0 +1,39 @@
+<assembly xmlns="http://maven.apache.org/ASSEMBLY/2.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.0.0 http://maven.apache.org/xsd/assembly-2.0.0.xsd
+http://maven.apache.org/ASSEMBLY/2.0.0 ">
+    <id>distribution</id>
+    <formats>
+        <format>zip</format>
+        <format>tar</format>
+    </formats>
+    <baseDirectory>crypthru-${version}</baseDirectory>
+    <files>
+        <file>
+            <source>scripts/crypthru</source>
+            <fileMode>0755</fileMode>
+            <filtered>true</filtered>
+            <outputDirectory>bin</outputDirectory>
+        </file>
+        <file>
+            <source>scripts/crypthru.bat</source>
+            <fileMode>0755</fileMode>
+            <filtered>true</filtered>
+            <outputDirectory>bin</outputDirectory>
+        </file>
+    </files>
+
+
+    <fileSets>
+
+        <fileSet>
+            <directory>target</directory>
+            <outputDirectory>bin</outputDirectory>
+            <includes>
+                <include>**/*-spring-boot.jar</include>
+            </includes>
+        </fileSet>
+    </fileSets>
+
+
+</assembly>
