@@ -1,26 +1,26 @@
 # Crypthru: cryptography for organizations
 
-Crypthru (CT) is a cryptography solution for organization workflow: it automates encrypting 
+Crypthru (crypthru) is a cryptography solution for organization workflow: it automates encrypting 
 of files and messages between **parties on an organization**. 
 
 Most cryptographic solutions target single users and email, and their usage is difficult  
 to adapt to an organization workflow, partly due to their dependence on tricky  
 keystore or key-rings. 
 
-On the other side CT uses the default file system to store keys and, if you decide
+On the other side crypthru uses the default file system to store keys and, if you decide
 to use a keystore (to identify parties) it is kept in a plain directory structure.
 
-CT is an **open source** program: you can inspect its code, verify that there is no
-back-door and consequently be 100% protected against eavesdrop. CT relies on 
+Crypthru is an **open source** program: you can inspect its code, verify that there is no
+back-door and consequently be 100% protected against eavesdrop. Crypthru relies on 
 [The Legion of the Bouncy Castle](https://www.bouncycastle.org/) that is also
 an open source project and Java [Spring Boot](https://spring.io/projects/spring-data).
 
-Further, CT does not use proprietary algorithms. It uses the PGP standard that results
-in a military level of security. Files encrypted with CT are compatible with PGP or GPG
+Further, Crypthru does not use proprietary algorithms. It uses the PGP standard that results
+in a military level of security. Files encrypted with Crypthru are compatible with PGP or GPG
 but automating batch and repetitive tasks is easier.
 
-In addition to open-source license, CT is available as a corporate solution that include
-strategic mentoring for the organization and assistance on how to integrate CT with
+In addition to open-source license, Crypthru is available as a corporate solution that include
+strategic mentoring for the organization and assistance on how to integrate Crypthru with
 your workflow and applications. More information available writing to **crypthru@cbsolution.net**,
 please inform your name email, or a phone number (with its international prefix) and
 a convenient time. Just that, **nothing else**, we will contact you. 
@@ -35,7 +35,7 @@ systems.
 
 ## Peer-to-peer cryptography
 
-CT employs [public-key cryptography](https://en.wikipedia.org/wiki/Public-key_cryptography):
+Crypthru employs [public-key cryptography](https://en.wikipedia.org/wiki/Public-key_cryptography):
 each distinct party has two keys: the **public key** for writing, and the **private key**   
 for reading. You generate a key-pair (public and private), keep the secret key 
 **absolutely with you** and give copies of the public key to whoever wants to communicate
@@ -54,10 +54,10 @@ key in order to decrypt the messages.
 
 ## An example
 
-Here is a short story to illustrate how CT works. CT is a command line application that
+Here is a short story to illustrate how Crypthru works. Crypthru is a command line application that
 you shall execute on yor computer console. Despite looking a little nerdy, this will give
-you full transparency on what is going on and simplify integration of CT with other
-applications. If you prefer an interactive, interface you can easily wrap CT in a custom
+you full transparency on what is going on and simplify integration of Crypthru with other
+applications. If you prefer an interactive, interface you can easily wrap Crypthru in a custom
 shell.
 
 Tarzan and Jane have set up a successful business in the jungle: they supply bananas to 
@@ -68,7 +68,7 @@ sell to Savor, as meat, under-performing monkeys in order to recover at least th
 
 The report shall be transmitted securely (to avoid given up monkeys to attempt an escape)
 and, considering Tarzan's ambitions to expand its business to a network, Tarzan and Jane
-decide to use a public key system and both install CT in their computers.
+decide to use a public key system and both install Crypthru in their computers.
 
 The first thing that Tarzan needs to do is to generate a key-pair, this is a private and
 public key so that Jane (as well as other future partners) can send him files and
@@ -96,7 +96,7 @@ Here is a summary of Tarzan's session:
     
     Your private tarzan@jungle.com key has been generated into file /home/tarzan/.crypthru/private/tarzan@jungle.com.key.
     .------------------------------------------------------------------------.
-    | Please keep this file STRICTLY WITH YOU and never transmit to anybody! |
+    | Please keep this file STRICrypthruLY WITH YOU and never transmit to anybody! |
      ------------------------------------------------------------------------ 
 
 Obviously Tarzan's passphrase is not visible and not shown!
@@ -123,23 +123,23 @@ Upon receiving the encrypted file, Tarzan issues the command:
 
     crypthru decrypt path=monkey-work.xlsx.pgp
 
-CT will ask Tarzan its passphrase (the one he gave and confirmed when he generated the key-pair)
+Crypthru will ask Tarzan its passphrase (the one he gave and confirmed when he generated the key-pair)
 and will restore the file `monkey-work.pgp` prepared by Jane.
 
-How did CT know which private key to use? Simple: it used the only private key in Tarzan's keystore.
+How did Crypthru know which private key to use? Simple: it used the only private key in Tarzan's keystore.
 Tarzan could also indicate the file containing the private key, or an ID for the private
-key (CT has many options and alternatives). In the same way Jane could have imported
-Tarzan's key in her own keystore and simply indicate its ID instead of a file. CT can even
+key (Crypthru has many options and alternatives). In the same way Jane could have imported
+Tarzan's key in her own keystore and simply indicate its ID instead of a file. Crypthru can even
 lookup in the history of old private keys, which one to use based on the date of the encrypted
 file. 
 
-CT can also actively monitor directories (folders) and automatically encrypt files that are
+Crypthru can also actively monitor directories (folders) and automatically encrypt files that are
 copied or dropped into them, delete the plain text file and send the encrypted files to
-destination. CT is flexible and smart to adapt to most different workflow needs.  
+destination. Crypthru is flexible and smart to adapt to most different workflow needs.  
 
-## How CT works
+## How Crypthru works
 
-CT executes a sequence of **Directives** specified as arguments or written in plain text files.
+Crypthru executes a sequence of **Directives** specified as arguments or written in plain text files.
 
 In previous examples all arguments were on a command line, but they can be also
 coded in [Yaml](https://en.wikipedia.org/wiki/YAML) files. For example:
@@ -175,7 +175,7 @@ by its parameters where the YML semicolon has been replaced by an equal sign (`=
 So each party within the organization, is uniquely identified by an id that is usually its email,
 phone number or any kind of code name or surrogate ID that you adopt.
 
-CT can use a keystore based on the file system. Such keystore is usually `~/.crypthru` where `~` 
+Crypthru can use a keystore based on the file system. Such keystore is usually `~/.crypthru` where `~` 
 is your home directory. You can use an alternative location by specifying the `-ks` switch
 on the command line.
 
@@ -198,12 +198,12 @@ and the "keys/public" contains the public keys. Each key is the party ID suffixe
 by ".key": simple, crystal clear and easy to inspect!
 
 Using this keystore you can reference parties by the actual file path (public/private-key)
-or ID (public-private-ID). Whenever you specify the ID, CT will search the matching keystore
+or ID (public-private-ID). Whenever you specify the ID, Crypthru will search the matching keystore
 entry.
 
 ## Key-lists
 
-Did you notice the `jungle` directory? CT let you also create
+Did you notice the `jungle` directory? Crypthru let you also create
 **key-list** directories that are normal directories (under keys/public directory) in which
 you can copy one or more public keys. Encrypting a file for `jungle` would
 encrypt it for Tarzan, Jane and all other members of the list. 
@@ -215,7 +215,7 @@ delete the key file.
 ## Key-history
 
 When you generate a new key-pair or import a public key, and a key with the same ID exists,
-CT saves it inserting the [Unix time](https://en.wikipedia.org/wiki/Unix_time), for 
+Crypthru saves it inserting the [Unix time](https://en.wikipedia.org/wiki/Unix_time), for 
 example in `tarzan@jungle.com~1616512491.key` the UNIX time is 1616512491 (seconds since)
 epoch. 
 
@@ -228,7 +228,7 @@ to use at any time.
 
 Supposing that Tarzan has multiple private keys (from time to time he works as Zorro too)
 asking him to supply each time its private ID or key file path would be tedious, and
-irritating Tarzan can be dangerous. So CT uses the following algorithm to guess the private
+irritating Tarzan can be dangerous. So Crypthru uses the following algorithm to guess the private
 key to use:
 
 If you specify a private key id (-private-id switch), them  this one is used, otherwise if there is
@@ -236,8 +236,8 @@ a single private key this key will be used.
    
 ## Daemon Execution
 
-In addition to scanning directories for encryption and decryption, CT can operate
-as a daemon. If you specify the `-watch` switch on command line, then CT will stay 
+In addition to scanning directories for encryption and decryption, Crypthru can operate
+as a daemon. If you specify the `-watch` switch on command line, then Crypthru will stay 
 active and watch the directories. New files copied or dropped will be subject to
 the same encrypt and decrypt rules.
 
@@ -275,7 +275,7 @@ Example (yml):
 
 Please notice that the special character `~` will be replaced with your home directory.
 
-CT also replaces environment and system variables in whatever text in, so, if you define
+Crypthru also replaces environment and system variables in whatever text in, so, if you define
 your directives.
 
     WHERE=myfolder
@@ -314,7 +314,6 @@ by `.zip` and delete the containing zip-file, automatically preventing
 
 ## encrypt directive
 
-
 Encrypt a set of files in a directory.
 
 The directory is scanned for any matching a set of predefined patterns.
@@ -341,7 +340,7 @@ Example:
 
 Please notice that the special character `~` will be replaced with your home directory.
 
-CT also replaces environment and system variables in whatever text in, so, if you define
+Crypthru also replaces environment and system variables in whatever text in, so, if you define
 your directives.
 
     WHERE=myfolder
