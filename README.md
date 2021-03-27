@@ -25,6 +25,14 @@ your workflow and applications. More information available writing to **crypthru
 please inform your name email, or a phone number (with its international prefix) and
 a convenient time. Just that, **nothing else**, we will contact you. 
 
+## Installation
+
+Crypthru requires JVM 8+. To use it simply download the 
+[zip](https://github.com/fgrazi/crypthru/blob/master/crypthru-0.1.0-SNAPSHOT-distribution.zip) or
+[tar](https://github.com/fgrazi/crypthru/blob/master/crypthru-0.1.0-SNAPSHOT-distribution.tar) 
+archive and decompress it. It contains a shell script for unix systems and a vat file for Windows 
+systems.
+
 ## Peer-to-peer cryptography
 
 CT employs [public-key cryptography](https://en.wikipedia.org/wiki/Public-key_cryptography):
