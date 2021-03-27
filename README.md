@@ -1,13 +1,13 @@
 # Crypthru: cryptography for organizations
 
-Crypthru (crypthru) is a cryptography solution for organization workflow: it automates encrypting 
+Crypthru is a cryptography solution for organization workflow: it automates encrypting 
 of files and messages between **parties on an organization**. 
 
 Most cryptographic solutions target single users and email, and their usage is difficult  
 to adapt to an organization workflow, partly due to their dependence on tricky  
 keystore or key-rings. 
 
-On the other side crypthru uses the default file system to store keys and, if you decide
+On the other side Crypthru uses the default file system to store keys and, if you decide
 to use a keystore (to identify parties) it is kept in a plain directory structure.
 
 Crypthru is an **open source** program: you can inspect its code, verify that there is no
