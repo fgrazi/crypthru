@@ -181,17 +181,17 @@ on the command line.
 
 Here is a sample content of a keystore:
 
-  - .crypthru 
-    - keys (directory)
-      - private (directory)
-        - yourname@mycompany.key
-      - public (directory)
-        - ann@mycompany.com.key
-        - accounting@mycompany.com.key
-        - jungle (directory)
-          - tarzan@mycompany.com.key
-          - jane@mycompany.com.key
-        ...
+      - .crypthru 
+        - keys (directory)
+          - private (directory)
+            - yourname@mycompany.key
+          - public (directory)
+            - ann@mycompany.com.key
+            - accounting@mycompany.com.key
+            - jungle (directory)
+              - tarzan@mycompany.com.key
+              - jane@mycompany.com.key
+            ...
 
 This is: the "keys/private" subdirectory contains your private keys (usually one),
 and the "keys/public" contains the public keys. Each key is the party ID suffixed
