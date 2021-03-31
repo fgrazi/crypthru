@@ -16,8 +16,22 @@ public class CreateKeypair implements Directive {
   private static final int MIN_PASSPHRASE_LEN = 8;
   private static final int MIN_ID_LEN = 3;
 
+  private String privateId;
+  private String passphrase;
+  private Dialog dialog;
+
   @Override
   public void configure(ConfigurationDecoder config) {
+    privateId = config.readString("private-id", null);
+    passphrase = config.readString("pass", null);
+  }
+
+  private Dialog getDialog() {
+    if (dialog != null)
+      return dialog;
+    dialog = new Dialog();
+    dialog.say("You are going to generate a new key-pair. Please answer the following questions.");
+    return dialog;
   }
 
   @Override
@@ -25,13 +39,12 @@ public class CreateKeypair implements Directive {
     return "Create Key Pair";
   }
 
+
   @Override
   public void execute(Arguments args) {
-    Dialog dialog = new Dialog();
-    dialog.say("You are going to generate a new key-pair. Please answer the following questions.");
-    Optional<String> myId, passPhrase;
-    for (; ; ) {
-      myId = dialog.ask("What is your ID (email, phone, code name... )");
+    for (; privateId == null; ) {
+      Dialog dialog = getDialog();
+      Optional<String> myId = dialog.ask("What is your ID (email, phone, code name... )");
       if (!myId.isPresent())
         return;
       boolean ok = true;
@@ -43,10 +56,12 @@ public class CreateKeypair implements Directive {
         dialog.error("Your ID contains invalid characters.", MIN_ID_LEN);
       }
       if (ok)
-        break;
+        privateId = myId.get();
     }
-    for (; ; ) {
-      passPhrase = dialog.askPassword("Type the passphrase for {0}", myId.get());
+
+    for (; passphrase == null; ) {
+      Dialog dialog = getDialog();
+      Optional<String> passPhrase = dialog.askPassword("Type the passphrase for {0}", privateId);
       if (!passPhrase.isPresent())
         return;
       if (passPhrase.get().length() < MIN_PASSPHRASE_LEN) {
@@ -57,25 +72,26 @@ public class CreateKeypair implements Directive {
         if (!confirm.isPresent())
           return;
         if (confirm.get().equals(passPhrase.get()))
-          break;
+          passphrase = passPhrase.get();
         dialog.error("Your confirmation mismatches. Let's try again...");
       }
     }
-    KeyPairProxy keyPair = args.getCryptService().createKeyPair(myId.get(), passPhrase.get());
-    Path[] privateAndPublic = args.getFsKeystore().save(myId.get(), keyPair);
+    KeyPairProxy keyPair = args.getCryptService().createKeyPair(privateId, passphrase);
+    Path[] privateAndPublic = args.getFsKeystore().save(privateId, keyPair);
+    if (dialog != null) {
+      dialog.say("Your public key {3} has been generated into file {0}{1}{2}.\n" +
+              "Never mind in protecting or hiding this file. You can publicly transmit to\n" +
+              "whoever will send you messages or data.\n", Dialog.ANSI_YELLOW, privateAndPublic[1],
+          Dialog.ANSI_GREEN, privateId);
 
-    dialog.say("Your public key {3} has been generated into file {0}{1}{2}.\n" +
-            "Never mind in protecting or hiding this file. You can publicly transmit to\n" +
-        "whoever will send you messages or data.\n", Dialog.ANSI_YELLOW, privateAndPublic[1],
-        Dialog.ANSI_GREEN, myId.get());
-
-    dialog.say("Your private {3} key has been generated into file {0}{1}{2}.\n" +
-            "{4} .------------------------------------------------------------------------. \n" +
-            " | Please keep this file STRICTLY WITH YOU and never transmit to anybody! | \n" +
-            " '------------------------------------------------------------------------' {5}\n",
-        Dialog.ANSI_YELLOW, privateAndPublic[0], Dialog.ANSI_GREEN, myId.get(), Dialog.ANSI_RED,
-        Dialog.ANSI_RESET);
-    log.info("New Key pair generated for " + myId);
+      dialog.say("Your private {3} key has been generated into file {0}{1}{2}.\n" +
+              "{4} .------------------------------------------------------------------------. \n" +
+              " | Please keep this file STRICTLY WITH YOU and never transmit to anybody! | \n" +
+              " '------------------------------------------------------------------------' {5}\n",
+          Dialog.ANSI_YELLOW, privateAndPublic[0], Dialog.ANSI_GREEN, privateId, Dialog.ANSI_RED,
+          Dialog.ANSI_RESET);
+    }
+    log.info("New Key pair generated for " + privateId);
   }
 
 }

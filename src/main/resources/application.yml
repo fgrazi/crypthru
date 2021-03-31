@@ -10,3 +10,6 @@ app:
     execute: net.cbsolution.crypthru.directives.Execute
     import-public-key: net.cbsolution.crypthru.directives.ImportPublicKey
 
+logging:
+  file:
+    name: ${user.home}/.crypthru/log/crypthru.log

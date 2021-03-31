@@ -26,6 +26,7 @@ import java.security.spec.RSAKeyGenParameterSpec;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.zip.Deflater;
 
 
 /**
@@ -35,6 +36,8 @@ import java.util.regex.Pattern;
 public class BcPgpService implements CrypterService {
 
   private static final Pattern EMAIL_ID_PATTERN = Pattern.compile("^.+<(.+)>$");
+  public static final int BUFFER_SIZE = 65536;
+  public static final int BLOCK_SIZE = 4096;
 
   static {
     Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
@@ -205,27 +208,24 @@ public class BcPgpService implements CrypterService {
       }
 
       OutputStream encOut = Files.newOutputStream(encryptedFile);
-
-      // create an indefinite length encrypted stream
-      OutputStream cOut = encGen.open(encOut, new byte[4096]);
-
-      // write out the literal data
-      PGPLiteralDataGenerator lData = new PGPLiteralDataGenerator();
-      OutputStream pOut = lData.open(
-          cOut, PGPLiteralData.BINARY,
-          PGPLiteralData.CONSOLE, FileChannel.open(plainTextFile).size(), new Date());
       InputStream source = Files.newInputStream(plainTextFile);
-
-      byte[] buf = new byte[8192];
-      int length;
-      while ((length = source.read(buf)) > 0) {
-        pOut.write(buf, 0, length);
+      try (OutputStream encryptedOut = encGen.open(encOut, new byte[BUFFER_SIZE])) {
+        PGPCompressedDataGenerator compressedDataGenerator = new PGPCompressedDataGenerator(PGPCompressedData.ZIP,
+            Deflater.BEST_SPEED);
+        try (OutputStream compressedOut = compressedDataGenerator.open(encryptedOut, new byte[BUFFER_SIZE])) {
+          PGPLiteralDataGenerator literalDataGenerator = new PGPLiteralDataGenerator();
+          try (OutputStream literalOut = literalDataGenerator.open(compressedOut, PGPLiteralData.BINARY,
+              plainTextFile.getFileName().toString(), new Date(), new byte[BUFFER_SIZE])) {
+            final byte[] buffer = new byte[BLOCK_SIZE];
+            int len;
+            while ((len = source.read(buffer)) > -1) {
+              literalOut.write(buffer, 0, len);
+            }
+          }
+        }
       }
-      pOut.close();
 
-      // finish the encryption
-      cOut.close();
-      source.close();
+
     } catch (IOException | PGPException e) {
       throw new RuntimeException("Error encrypting " + plainTextFile, e);
     }
@@ -297,12 +297,20 @@ public class BcPgpService implements CrypterService {
         InputStream original;
         if (o instanceof PGPLiteralData) {
           PGPLiteralData litData = (PGPLiteralData) o;
+          log.config("Found Literal Data, fileName: " + litData.getFileName() + ", modified: " + litData.getModificationTime());
           original = litData.getInputStream();
         } else if (o instanceof PGPCompressedData) {
           PGPCompressedData compData = (PGPCompressedData) o;
-          original = compData.getDataStream();
+          log.config("Found compressed data, algorithm: " + compData.getAlgorithm() + "");
+          pgpFact = new JcaPGPObjectFactory(compData.getDataStream());
+          o = (PGPLiteralData)pgpFact.nextObject();
+          if (!(o instanceof PGPLiteralData))
+            throw new RuntimeException("Unexpected stream in " + encryptedFile + ", unexpected object of type: " + o.getClass().getName());
+          PGPLiteralData litData = (PGPLiteralData)o;
+          log.config("Compressed data contains literal data, fileName: " + litData.getFileName() + ", modified: " + litData.getModificationTime());
+          original = litData.getInputStream();
         } else
-          throw new RuntimeException("Unexpected stream in " + encryptedFile + ": " + o.getClass().getName());
+          throw new RuntimeException("Unexpected stream in " + encryptedFile + ", unexpected object of type: " + o.getClass().getName());
         while ((length = original.read(buf)) > 0) {
           pOut.write(buf, 0, length);
         }

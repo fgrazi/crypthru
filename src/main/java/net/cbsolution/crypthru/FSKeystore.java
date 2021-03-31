@@ -119,7 +119,7 @@ public class FSKeystore {
     Path path = getHomeFile("keys/public/" + idOrPath);
     if (Files.exists(path) && Files.isDirectory(path)) {
       try {
-        return Files.list(path).filter(p -> p.getFileName().endsWith(KEY))
+        return Files.list(path).filter(p -> p.getFileName().toString().endsWith(KEY))
             .collect(Collectors.toSet());
       } catch (IOException e) {
         throw new RuntimeException("Unexpected exception scanning " + path, e);
@@ -251,8 +251,8 @@ public class FSKeystore {
   }
 
   public Path[] save(String id, KeyPairProxy keyPair) {
-    Path privateFile = saveKey(getDirectory("home/private"), id, keyPair.getPrivateKeyProxy());
-    Path publicFile = saveKey(getDirectory("home/public"), id, keyPair.getPublicKeyProxy());
+    Path privateFile = saveKey(getDirectory("keys/private"), id, keyPair.getPrivateKeyProxy());
+    Path publicFile = saveKey(getDirectory("keys/public"), id, keyPair.getPublicKeyProxy());
     return new Path[]{privateFile, publicFile};
   }
 
