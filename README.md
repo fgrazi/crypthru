@@ -28,8 +28,8 @@ a convenient time. Just that, **nothing else**, we will contact you.
 ## Installation
 
 Crypthru requires JVM 8+. To use it simply download the 
-[zip](https://github.com/fgrazi/crypthru/raw/master/crypthru-0.1.0-SNAPSHOT-distribution.zip) or
-[tar](https://github.com/fgrazi/crypthru/raw/master/crypthru-0.1.0-SNAPSHOT-distribution.tar) 
+[zip](https://github.com/fgrazi/crypthru/raw/master/crypthru-0.1.1-SNAPSHOT-distribution.zip) or
+[tar](https://github.com/fgrazi/crypthru/raw/master/crypthru-0.1.1-SNAPSHOT-distribution.tar) 
 archive and decompress it. It contains a shell script for unix systems and a vat file for Windows 
 systems.
 
