@@ -45,7 +45,7 @@ wipe
 :  Upon successful encryption the plain text encrypted (.pgp) files will be deleted.
 
 force
-: `true` to force encryption even if the plain text file exists and its date
+: `true` to force decryption even if the plain text file exists and its date
 follows last encrypted file update.
 
 unzip

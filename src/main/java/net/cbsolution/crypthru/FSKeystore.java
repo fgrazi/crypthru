@@ -80,7 +80,7 @@ public class FSKeystore {
         throw new RuntimeException("There is no private key. Please execute the create-key-pair directive first.");
       if (keyIds.size() == 1)
         return keyIds.iterator().next();
-      throw new RuntimeException("No --private-id specified and multiple private key found.");
+      throw new RuntimeException("No -private-id specified and multiple private key found.");
     } catch (IOException e) {
       throw new RuntimeException("Unexpected exception", e);
     }

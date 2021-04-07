@@ -1,0 +1,25 @@
+# Sample file to encrypt some file, decrypt them and check result.
+# shall be executed from parent of test-data directory.
+
+- directive: execute
+  lenient: true
+  command: |
+    rm test-data/outbox/*
+    cp test-data/loremipsum* test-data/outbox
+
+- directive: encrypt
+  path: test-data/outbox
+  public-id: tarzan@gmail.com
+  wipe: true
+  # gpg: false
+  # zip: false
+
+- directive: decrypt
+  path: test-data/outbox
+  wipe: false
+
+- directive: execute
+  command: |
+    diff test-data/loremipsum.txt test-data/outbox/loremipsum.txt
+    diff test-data/loremipsum.html test-data/outbox/loremipsum.html
+    diff test-data/loremipsum.png test-data/outbox/loremipsum.png

@@ -66,7 +66,7 @@ public class BcPgpService implements CrypterService {
       Iterator<PGPSecretKey> iter = pgpSecretKeyRing.iterator();
       while (iter.hasNext()) {
         PGPSecretKey key = iter.next();
-        log.info("Found private key " + key.getKeyID());
+        log.fine("Found private key " + key.getKeyID());
         result.put(key.getKeyID(), key);
       }
       return result;
