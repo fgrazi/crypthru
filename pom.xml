@@ -10,7 +10,7 @@
     </parent>
     <groupId>net.cbsolution</groupId>
     <artifactId>crypthru</artifactId>
-    <version>0.1.2-SNAPSHOT</version>
+    <version>0.1.3</version>
     <name>crypthru</name>
     <description>Secure Communication Made Easy</description>
     <properties>

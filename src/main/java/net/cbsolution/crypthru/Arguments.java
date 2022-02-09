@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Console;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,15 +79,20 @@ public class Arguments {
 
   public PrivateKeyProxy figurePrivateKey() {
     if (privateKey == null) {
-      if (privateKeyId == null)
-        privateKeyId = fsKeystore.pickPrivateKey();
-      Path privateKeyFile = fsKeystore.getPrivateKeyFile(privateKeyId);
+      Path keyFile;
+      if (privateKeyFile != null)
+        keyFile = Paths.get(privateKeyFile);
+      else {
+        if (privateKeyId == null)
+          privateKeyId = fsKeystore.pickPrivateKey();
+        keyFile = fsKeystore.getPrivateKeyFile(privateKeyId);
+      }
       if (passPhrase.isEmpty())
         passPhrase = getOrAskPassphrase(privateKeyId);
       else if ("empty".equals(passPhrase))
         passPhrase = "";
-      privateKey = cryptService.readPrivateKey(privateKeyFile, passPhrase);
-      log.info("Using private key of " + privateKeyId + " loaded from " + privateKeyFile);
+      privateKey = cryptService.readPrivateKey(keyFile, passPhrase);
+      log.info("Using private key of " + privateKeyId + " loaded from " + keyFile);
     }
     return privateKey;
   }
